@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Expense Reports</title>
+    
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .page-container { max-width: 1200px; margin: 0 auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        h1 { color: #007bff; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tbody tr:hover { background-color: #f1f1f1; }
+        .btn { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; color: white; margin-right: 5px; }
+        .btn-view { background-color: #007bff; }
+        .btn-edit { background-color: #ffc107; color: #333; }
+        .btn-submit { background-color: #28a745; }
+
+        .status { padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 0.9em; }
+        .draft { background-color: #e9ecef; color: #6c757d; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .approved { background-color: #d4edda; color: #155724; }
+        .rejected { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <h1>My Expense Reports</h1>
+    
+    <table id="reportsTable">
+        <thead>
+            <tr>
+                <th>Report Name</th>
+                <th>Date Created</th>
+                <th>Total Amount (USD)</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="reportsTableBody">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const employeeReports = [
+            { id: 101, name: "Q3 Client Travel", date: "2025-09-28", amount: 895.50, status: "Approved" },
+            { id: 102, name: "October Software Renewals", date: "2025-10-01", amount: 150.00, status: "Pending" },
+            { id: 103, name: "Client Lunch - Jones", date: "2025-10-03", amount: 65.20, status: "Draft" },
+            { id: 104, name: "Sep Training Fees", date: "2025-09-15", amount: 300.00, status: "Rejected" }
+        ];
+
+        const tableBody = document.getElementById('reportsTableBody');
+
+        const renderReportsTable = () => {
+            tableBody.innerHTML = '';
+
+            if (employeeReports.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `<td colspan="5" style="text-align: center; color: #999; font-style: italic;">
+                    No reports found. Submit a new report!
+                </td>`;
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+
+            employeeReports.forEach(report => {
+                const row = document.createElement('tr');
+                row.dataset.reportId = report.id;
+
+                let actionsHtml = '';
+                if (report.status === 'Draft') {
+                    actionsHtml = `<button class="btn btn-edit" data-action="edit">Edit</button>
+                                   <button class="btn btn-submit" data-action="submit">Submit</button>`;
+                } else if (report.status === 'Pending') {
+                    actionsHtml = `<button class="btn btn-view" data-action="view">View</button>`;
+                } else {
+                    actionsHtml = `<button class="btn btn-view" data-action="view">View Details</button>`;
+                }
+
+                row.innerHTML = `
+                    <td>${report.name}</td>
+                    <td>${report.date}</td>
+                    <td>$${report.amount.toFixed(2)}</td>
+                    <td><span class="status ${report.status.toLowerCase()}">${report.status}</span></td>
+                    <td>${actionsHtml}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        };
+
+        tableBody.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const action = e.target.dataset.action;
+                const reportId = e.target.closest('tr').dataset.reportId;
+                const report = employeeReports.find(r => r.id == reportId);
+                
+                if (!report) return;
+
+                switch(action) {
+                    case 'view':
+                        alert(`Viewing Report ${report.name} (ID: ${reportId})\nStatus: ${report.status}\nTotal: $${report.amount.toFixed(2)}.\n\n(This would open a detailed modal or page view.)`);
+                        break;
+                    case 'edit':
+                        alert(`Editing Draft Report ${report.name}.\n(This would redirect to the Expense Entry form with pre-filled data.)`);
+                        break;
+                    case 'submit':
+                        report.status = 'Pending';
+                        alert(`Report ${report.name} submitted successfully! It is now Pending Approval.`);
+                        renderReportsTable(); 
+                        break;
+                    default:
+                        console.log(`Unhandled action: ${action}`);
+                }
+            }
+        });
+        renderReportsTable();
+    });
+</script>
+
+</body>
+</html>
