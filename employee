@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Expense Entry</title>
+    <title>Employee Expense Entry (With OCR)</title>
     <style>
         body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
-        .page-container { max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .page-container { max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         h1, h2 { color: #007bff; margin-bottom: 15px; }
         hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
         .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
@@ -76,7 +76,7 @@
                 <select id="item-category" required>
                     <option value="" disabled selected>Select Category</option>
                     <option value="Travel">Travel</option>
-                    <option value="Meals">Meals & Entertainment</option>
+                    <option value="Meals">Meals</option>
                     <option value="Software">Software/Tools</option>
                     <option value="Mileage">Mileage/Local Travel</option>
                 </select>
@@ -87,7 +87,13 @@
             </div>
             <div class="form-group" style="flex: 2;">
                 <label for="item-receipt">Receipt Upload (Optional)</label>
-                <input type="file" id="item-receipt">
+                <input type="file" id="item-receipt" accept="image/*, .pdf">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-primary" id="scanReceiptBtn">
+                    ✨ Scan Receipt (OCR)
+                </button>
             </div>
         </div>
         
@@ -133,6 +139,7 @@
         const reportTotalElement = document.getElementById('reportTotal');
         const submitReportBtn = document.getElementById('submitReportBtn');
         const currencySymbol = document.getElementById('report-currency').value;
+        const scanReceiptBtn = document.getElementById('scanReceiptBtn');
 
         let expenseItems = [];
         let itemCounter = 0;
@@ -176,6 +183,34 @@
             }
             updateReportTotal();
         };
+        
+        // --- OCR Simulation Function ---
+        const simulateOCR = () => {
+            const receiptFile = document.getElementById('item-receipt').files[0];
+            
+            if (!receiptFile) {
+                alert("Please select an image or PDF file first to simulate OCR.");
+                return;
+            }
+
+            // Simulated OCR Output Data
+            const ocrResult = {
+                amount: 45.75,
+                date: "2025-10-04",
+                vendor: "The Burger Shack",
+                category: "Meals",
+                description: "Client lunch with Acme team."
+            };
+
+            // Auto-populate the form fields
+            document.getElementById('item-amount').value = ocrResult.amount.toFixed(2);
+            document.getElementById('item-date').value = ocrResult.date;
+            document.getElementById('item-description').value = ocrResult.vendor + " - " + ocrResult.description;
+            document.getElementById('item-category').value = ocrResult.category;
+            
+            alert(`OCR successful! Expense details for ${ocrResult.vendor} ($${ocrResult.amount.toFixed(2)}) auto-populated.`);
+        };
+        // End OCR Simulation
 
         addItemForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -243,6 +278,7 @@ This report is now visible on the Manager's Approval Dashboard.
             renderItemsTable();
         });
 
+        scanReceiptBtn.addEventListener('click', simulateOCR);
         renderItemsTable();
     });
 </script>
