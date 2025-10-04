@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - Expense Approval</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #expense-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #expense-table th, #expense-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #expense-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+
+        #expense-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+
+        .view-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .approve-btn {
+            background-color: #28a745; 
+            color: white;
+        }
+
+        .reject-btn {
+            background-color: #dc3545; 
+            color: white;
+        }
+
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        .pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .processed-message {
+            font-weight: bold;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <h1>Expense Approval Overview</h1>
+
+    <table id="expense-table">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Report Name / Category</th>
+                <th>Request Details</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="expenseTableBody">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const expenseData = [
+            {
+                id: 1,
+                employee: "Jane Doe",
+                category: "Travel Report Q1",
+                amount: 1450.75,
+                status: "Pending",
+                details: "Flight and hotel for NYC conference."
+            },
+            {
+                id: 2,
+                employee: "Alex Smith",
+                category: "Client Dinner",
+                amount: 189.50,
+                status: "Pending",
+                details: "Dinner with Acme Corp team."
+            },
+            {
+                id: 3,
+                employee: "Mike Johnson",
+                category: "Software Subscription",
+                amount: 49.99,
+                status: "Pending",
+                details: "Monthly Figma subscription."
+            }
+        ]; 
+
+        const tableBody = document.getElementById('expenseTableBody');
+
+        const renderTable = () => {
+            tableBody.innerHTML = ''; 
+
+            if (expenseData.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="6" style="text-align: center; color: #999; font-style: italic;">
+                        No expense reports are currently pending approval.
+                    </td>
+                `;
+                tableBody.appendChild(emptyRow);
+                return;
+            }
+
+            expenseData.forEach(expense => {
+                const row = document.createElement('tr');
+                row.dataset.expenseId = expense.id;
+
+                row.innerHTML = `
+                    <td>${expense.employee}</td>
+                    <td>${expense.category}</td>
+                    <td>${expense.details}</td>
+                    <td>$${expense.amount.toFixed(2)}</td>
+                    <td>
+                        <button class="action-btn view-btn">View</button>
+                        <button class="action-btn approve-btn" data-id="${expense.id}">Approve</button>
+                        <button class="action-btn reject-btn" data-id="${expense.id}">Reject</button>
+                    </td>
+                    <td><span class="status ${expense.status.toLowerCase()}">${expense.status}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        };
+
+        const handleAction = (event) => {
+            const button = event.target;
+            if (!button.classList.contains('action-btn')) return;
+
+            const row = button.closest('tr');
+            const actionType = button.textContent.trim().toLowerCase(); 
+
+            if (actionType === 'view') {
+                alert(`VIEW DETAILS: This button would open a modal showing all detailed line items for the report.`);
+                return;
+            }
+
+
+            const newStatus = actionType === 'approve' ? 'Approved' : 'Rejected';
+            
+            const statusCell = row.querySelector('.status');
+            statusCell.textContent = newStatus;
+            statusCell.className = `status ${newStatus.toLowerCase()}`;
+
+            const actionCell = button.closest('td');
+            actionCell.innerHTML = `<span class="processed-message">${newStatus.toUpperCase()}</span>`;
+
+            setTimeout(() => {
+                row.remove();
+                if (tableBody.children.length === 0) {
+                     renderTable(); 
+                }
+            }, 1500); 
+        };
+
+        tableBody.addEventListener('click', handleAction);
+
+        renderTable();
+    });
+</script>
+</body>
+</html>
