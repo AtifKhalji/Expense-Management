@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Expense Entry</title>
     <style>
-        /* Minimal CSS for basic readability - you will expand this later */
         body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
         .page-container { max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         h1, h2 { color: #007bff; margin-bottom: 15px; }
@@ -128,7 +127,6 @@
 </div>
 
 <script>
-    // JavaScript logic to handle form submission, table updates, and total calculation will go here
 </script>
 </body>
 </html>
