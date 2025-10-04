@@ -91,7 +91,7 @@ function renderTable() {
         return;
     }
     users.forEach(u=>{
-        tableBody.insertAdjacentHTML('beforeend',`<tr data-id="${u.id}"><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td><strong>${u.role}</strong></td><td><span class="${u.status==='Pending'?'status-pending':'status-sent'}">${u.status}</span></td><td><button class="btn action-btn">${u.status==='Pending'?'Send Invitation':'Resend Invitation'}</button><button class="btn delete-btn">Delete</button></td></tr>`);
+        tableBody.insertAdjacentHTML('beforeend',<tr data-id="${u.id}"><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td><strong>${u.role}</strong></td><td><span class="${u.status==='Pending'?'status-pending':'status-sent'}">${u.status}</span></td><td><button class="btn action-btn">${u.status==='Pending'?'Send Invitation':'Resend Invitation'}</button><button class="btn delete-btn">Delete</button></td></tr>);
     });
 }
 function saveUsers(){ localStorage.setItem('users',JSON.stringify(users)); }
@@ -123,7 +123,7 @@ document.getElementById('userTableBody').addEventListener('click',function(e){
         users[idx].status='Sent';
         saveUsers();
         renderTable();
-        alert(`Invitation sent to ${users[idx].email}`);
+        alert(Invitation sent to ${users[idx].email});
     }
 });
 renderTable();
