@@ -83,49 +83,83 @@ table tbody tr:hover { background:#f1f1f1; }
 <script>
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let userCounter = users.length;
+
 function renderTable() {
     const tableBody = document.getElementById('userTableBody');
     tableBody.innerHTML='';
+    
     if(users.length===0){
         tableBody.innerHTML='<tr id="empty-row"><td colspan="6" style="text-align:center;color:#999;">No users found. Add the first user above.</td></tr>';
         return;
     }
+    
     users.forEach(u=>{
-        tableBody.insertAdjacentHTML('beforeend',<tr data-id="${u.id}"><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td><strong>${u.role}</strong></td><td><span class="${u.status==='Pending'?'status-pending':'status-sent'}">${u.status}</span></td><td><button class="btn action-btn">${u.status==='Pending'?'Send Invitation':'Resend Invitation'}</button><button class="btn delete-btn">Delete</button></td></tr>);
+        // CORRECTION: Use backticks (`) for the template literal string
+        tableBody.insertAdjacentHTML('beforeend',`
+            <tr data-id="${u.id}">
+                <td>${u.id}</td>
+                <td>${u.name}</td>
+                <td>${u.email}</td>
+                <td><strong>${u.role}</strong></td>
+                <td><span class="${u.status==='Pending'?'status-pending':'status-sent'}">${u.status}</span></td>
+                <td>
+                    <button class="btn action-btn">${u.status==='Pending'?'Send Invitation':'Resend Invitation'}</button>
+                    <button class="btn delete-btn">Delete</button>
+                </td>
+            </tr>
+        `);
     });
 }
+
 function saveUsers(){ localStorage.setItem('users',JSON.stringify(users)); }
+
 document.getElementById('addUserForm').addEventListener('submit',function(e){
     e.preventDefault();
     const name=document.getElementById('new-name').value.trim();
     const email=document.getElementById('new-email').value.trim();
     const role=document.getElementById('new-role').value;
+    
     if(!name||!email){ alert("Please enter both name and email."); return; }
     const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailPattern.test(email)){ alert("Please enter a valid email."); return; }
     if(users.some(u=>u.email.toLowerCase()===email.toLowerCase())){ alert("This email is already registered."); return; }
+    
     userCounter++;
-    const id=(role==='Manager'?'MGR':'EMP')+userCounter;
+    const id=(role==='Manager'?'MGR':'EMP')+String(userCounter).padStart(3, '0'); // Pad with 0s for neatness
+    
     users.push({id,name,email,role,status:'Pending'});
     saveUsers();
     renderTable();
-    document.getElementById('new-name').value=''; document.getElementById('new-email').value=''; document.getElementById('new-role').value='Employee'; document.getElementById('new-name').focus();
+    
+    document.getElementById('new-name').value=''; 
+    document.getElementById('new-email').value=''; 
+    document.getElementById('new-role').value='Employee'; 
+    document.getElementById('new-name').focus();
 });
+
 document.getElementById('userTableBody').addEventListener('click',function(e){
     const row=e.target.closest('tr');
     if(!row||row.id==='empty-row') return;
+    
     const userId=row.getAttribute('data-id');
     const idx=users.findIndex(u=>u.id===userId);
+    
     if(e.target.classList.contains('delete-btn')){
-        if(confirm("Are you sure you want to delete this user?")){ users.splice(idx,1); saveUsers(); renderTable(); }
+        if(confirm("Are you sure you want to delete this user?")){ 
+            users.splice(idx,1); 
+            saveUsers(); 
+            renderTable(); 
+        }
     }
+    
     if(e.target.classList.contains('action-btn')){
         users[idx].status='Sent';
         saveUsers();
         renderTable();
-        alert(Invitation sent to ${users[idx].email});
+        alert(`Invitation sent to ${users[idx].email}`);
     }
 });
+
 renderTable();
 </script>
 </body>
