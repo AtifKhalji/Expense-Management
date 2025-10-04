@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Enter Your creditentials</title>
+    </head>
+    <body>
+        <center>
+        <form>
+            <fieldset style="background-color: orange;">
+            <center><h1>Enter Your creditentials</h1></center>
+            <p style="background-color: orange;">
+            <center>
+            <br>
+            <label for="Name" style="font-size: 30px;font-weight: bold;margin-right: 290px;"> Name: </label>
+            <br>
+             <input type="text" style="border:2px solid black;font-size: 30px;" Name="Name" placeholder="Enter your Name"/>
+             <br>
+            <label for="Email" style="font-size: 30px;font-weight: bold;margin-right: 290px;">Email: </label>
+            <br>
+             <input type="text" style="border:2px solid black;font-size: 30px;" Name="Email" placeholder="Enter your E-mail"/>
+             <br>
+             <label for="pswd" style="font-size: 30px;font-weight: bold;margin-right: 150px;">Create Password: </label>
+             <br>
+             <input type="text" style="border:2px solid black;font-size: 30px;" Name="pswd" placeholder="Enter your password"/>
+            <br>
+            <label for="pswd" style="font-size: 30px;font-weight: bold;margin-right: 140px;">Confirm Password: </label>
+            <br>
+             <input type="text" style="border:2px solid black;font-size: 30px;" Name="pswd" placeholder="Enter your password"/>
+            <br>
+            <label for="country"><h1>Select Your country:</h1></label>
+            <select id="cntry" name="cntry" padding:1000px 1000px;>
+            <option value="country">choose Your country</option>
+            <option value="IND">India</option>
+            <option value="USA">America</option>
+            <option value="UK">London</option>
+            </select>
+        </p>
+  <br><br>
+  <button type="submit"><a href ="azhar.html"> Sign Up</button>
+        </center>
+    </fieldset>
+        </form>
+    </body>
+</html>
