@@ -1,1 +1,134 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Expense Entry</title>
+    <style>
+        /* Minimal CSS for basic readability - you will expand this later */
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .page-container { max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1, h2 { color: #007bff; margin-bottom: 15px; }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
+        .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+        .form-group { flex: 1; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], input[type="date"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #f1f1f1; }
+        .total-row td { font-weight: bold; background-color: #e9ecef; }
+        .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+        .btn-primary { background-color: #007bff; }
+        .btn-success { background-color: #28a745; }
+        .btn-danger { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <h1>New Expense Report</h1>
+
+    <form id="reportHeaderForm">
+        <h2>Report Details</h2>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="report-name">Report Name</label>
+                <input type="text" id="report-name" placeholder="e.g., Q2 Travel to Chicago" required>
+            </div>
+            <div class="form-group">
+                <label for="employee-name">Employee Name</label>
+                <input type="text" id="employee-name" value="Current Employee Name" readonly>
+            </div>
+        </div>
+        <div class="form-row">
+             <div class="form-group">
+                <label for="report-date">Date Created</label>
+                <input type="date" id="report-date" value="2025-10-04" readonly>
+            </div>
+             <div class="form-group">
+                <label for="report-currency">Currency (Default)</label>
+                <input type="text" id="report-currency" value="USD" readonly>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary">Save Report Header (Draft)</button>
+    </form>
+
+    <hr>
+
+    <h2>Add New Expense Item</h2>
+    <form id="addItemForm">
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label for="item-description">Description / Vendor</label>
+                <input type="text" id="item-description" placeholder="e.g., Delta Flight, Client Lunch" required>
+            </div>
+            <div class="form-group">
+                <label for="item-date">Date</label>
+                <input type="date" id="item-date" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="item-category">Category</label>
+                <select id="item-category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Meals">Meals & Entertainment</option>
+                    <option value="Software">Software/Tools</option>
+                    <option value="Mileage">Mileage/Local Travel</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="item-amount">Amount (<span id="currency-symbol">USD</span>)</label>
+                <input type="number" id="item-amount" min="0.01" step="0.01" placeholder="0.00" required>
+            </div>
+            <div class="form-group" style="flex: 2;">
+                <label for="item-receipt">Receipt Upload (Optional)</label>
+                <input type="file" id="item-receipt">
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-success" id="addItemBtn">Add Item to Report</button>
+    </form>
+
+    <hr>
+
+    <h2>Items in Report</h2>
+    <div class="report-items-container">
+        <table id="expenseItemsTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount (<span id="table-currency-symbol">USD</span>)</th>
+                    <th>Receipt</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="itemsTableBody">
+                </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="3" style="text-align: right;">TOTAL REPORT AMOUNT:</td>
+                    <td id="reportTotal">$0.00</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    <div style="text-align: right; margin-top: 20px;">
+        <button type="button" class="btn btn-primary" id="submitReportBtn">SUBMIT REPORT FOR APPROVAL</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript logic to handle form submission, table updates, and total calculation will go here
+</script>
+</body>
+</html>
