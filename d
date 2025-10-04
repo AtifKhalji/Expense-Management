@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin User Management - Expense System</title>
     <style>
-        /* CSS Provided by User, plus necessary additions for the page */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,9 +16,6 @@
             background-color: #f4f4f9;
             padding: 20px;
         }
-
-        /* The overall layout classes are not fully used here as we only build the Admin page, 
-           but they are kept for consistency with the overall design plan. */
         .page-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -33,26 +29,21 @@
             margin-bottom: 15px; 
             color: #333; 
         }
-
-        /* Form Styling */
         .form-group {
             margin-bottom: 15px;
         }
-
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
             color: #333;
         }
-
         .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-
         .btn {
             padding: 10px 15px;
             border: none;
@@ -60,38 +51,31 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-
         .primary-btn {
             background-color: #007bff;
             color: white;
         }
         .primary-btn:hover { background-color: #0056b3; }
-
-        /* Table Styling */
         .report-table-container {
             overflow-x: auto;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-
         table th, table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-
         table th {
-            background-color: #e9ecef; /* Based on your provided CSS */
+            background-color: #e9ecef; 
             font-weight: 600;
             color: #333;
         }
-        
         table thead th {
-            background-color: #007bff; /* Custom color for header consistency */
+            background-color: #007bff; 
             color: white;
         }
 
@@ -99,13 +83,12 @@
             background-color: #f1f1f1;
         }
         
-        /* Action-specific styles for User Management */
         .action-btn { background-color: #ffc107; color: #333; }
         .action-btn:hover { background-color: #e0a800; }
         .delete-btn { background-color: #dc3545; color: white; }
         .delete-btn:hover { background-color: #c82333; }
         .status-pending { color: #ffc107; font-weight: bold; }
-        .form-row { display: flex; gap: 15px; } /* Custom flex for the form layout */
+        .form-row { display: flex; gap: 15px; }
         .form-row .form-group { flex-grow: 1; }
         .add-user-btn-container { text-align: right; margin-top: 15px; }
     </style>
@@ -167,30 +150,20 @@
 
 <script>
     document.getElementById('addUserForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevents the page from reloading
-        
-        // 1. Get the values from the form inputs
+        event.preventDefault(); 
         const name = document.getElementById('new-name').value.trim();
         const email = document.getElementById('new-email').value.trim();
         const role = document.getElementById('new-role').value;
-        
-        // Check if the input fields are empty
         if (!name || !email) {
             alert("Please enter both a full name and email address.");
             return; 
         }
-
-        // 2. Reference the table body and remove the 'empty' placeholder row
         const tableBody = document.getElementById('userTableBody');
         const emptyRow = document.getElementById('empty-row');
         if (emptyRow) {
             emptyRow.remove();
         }
-
-        // Simple way to generate a temporary ID (for demo purposes)
         const newID = role === 'Manager' ? 'MGR' + Math.floor(Math.random() * 1000) : 'EMP' + Math.floor(Math.random() * 1000);
-
-        // 3. Create the new row HTML
         const newRow = `
             <tr>
                 <td>${newID}</td>
@@ -204,17 +177,12 @@
                 </td>
             </tr>
         `;
-
-        // 4. Insert the new row into the table
         tableBody.insertAdjacentHTML('beforeend', newRow);
-
-        // 5. Clear the form for the next entry
         document.getElementById('new-name').value = '';
         document.getElementById('new-email').value = '';
-        document.getElementById('new-role').value = 'Employee'; // Reset role dropdown
-        document.getElementById('new-name').focus(); // Focus back to the name field
+        document.getElementById('new-role').value = 'Employee'; 
+        document.getElementById('new-name').focus(); 
     });
 </script>
-
 </body>
 </html>
